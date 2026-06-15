@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Settings</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.settings-page{
+  padding:2rem 0;
+}
+
+.page-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.setting-group{
+  margin-bottom:2rem;
+}
+
+.setting-group h2{
+  margin-bottom:1rem;
+  color:var(--secondary);
+}
+
+.button-group{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-top:1rem;
+}
+
+.danger-btn{
+  background:linear-gradient(135deg,#ef4444,#b91c1c);
+}
+
+.info-box{
+  color:var(--text-muted);
+}
+</style>
+</head>
+<body>
+
+<div class="container settings-page">
+
+  <div class="page-header">
+    <h1>Settings</h1>
+    <p>Manage your Arcane Self journey.</p>
+  </div>
+
+  <!-- CHARACTER -->
+
+  <div class="arcane-card setting-group">
+    <h2>Character</h2>
+
+    <label>Character Name</label>
+    <input
+      id="characterName"
+      class="arcane-input mt-1"
+      placeholder="Character Name"
+    >
+
+    <button
+      class="arcane-btn mt-2"
+      onclick="saveName()">
+      Save Name
+    </button>
+  </div>
+
+  <!-- DATA -->
+
+  <div class="arcane-card setting-group">
+    <h2>Data Management</h2>
+
+    <p class="info-box">
+      Resetting will permanently erase all progress.
+    </p>
+
+    <div class="button-group">
+
+      <button
+        class="arcane-btn"
+        onclick="exportData()">
+        Export Save
+      </button>
+
+      <button
+        class="arcane-btn danger-btn"
+        onclick="wipeData()">
+        Reset Progress
+      </button>
+
+    </div>
+  </div>
+
+  <!-- PROJECT INFO -->
+
+  <div class="arcane-card setting-group">
+    <h2>Arcane Self</h2>
+
+    <p>Version: 1.0 Alpha</p>
+    <p>Storage: localStorage</p>
+    <p>Theme: Solo Leveling Inspired RPG</p>
+  </div>
+
+  <div class="text-center">
+    <a href="dashboard.html">
+      <button class="arcane-btn">
+        Back To Dashboard
+      </button>
+    </a>
+  </div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "create.html";
+}
+
+const data = getData();
+
+document.getElementById("characterName").value =
+  data.character.name;
+
+function saveName(){
+
+  const data = getData();
+
+  const newName =
+    document.getElementById("characterName")
+    .value
+    .trim();
+
+  if(!newName){
+    alert("Enter a valid name.");
+    return;
+  }
+
+  data.character.name = newName;
+
+  saveData(data);
+
+  alert("Character updated.");
+}
+
+function exportData(){
+
+  const data = getData();
+
+  const blob = new Blob(
+    [JSON.stringify(data,null,2)],
+    { type:"application/json" }
+  );
+
+  const link = document.createElement("a");
+
+  link.href = URL.createObjectURL(blob);
+  link.download = "arcane-self-save.json";
+
+  link.click();
+}
+
+function wipeData(){
+
+  const confirmReset =
+    confirm(
+      "This will erase all progress. Continue?"
+    );
+
+  if(!confirmReset) return;
+
+  resetData();
+
+  alert("Progress reset.");
+
+  window.location.href = "create.html";
+}
+</script>
+
+</body>
+</html>

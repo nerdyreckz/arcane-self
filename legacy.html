@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Legacy</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.legacy-page{
+  padding:2rem 0;
+}
+
+.legacy-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.legacy-header h1{
+  color:var(--secondary);
+}
+
+.timeline{
+  margin-top:2rem;
+}
+
+.timeline-item{
+  margin-bottom:1.5rem;
+}
+
+.timeline-date{
+  color:var(--cyan);
+  font-weight:700;
+  margin-bottom:.5rem;
+}
+
+.summary-grid{
+  margin-top:2rem;
+}
+
+.summary-card{
+  text-align:center;
+}
+
+.big-number{
+  font-size:2rem;
+  font-weight:700;
+  color:var(--secondary);
+}
+
+.character-card{
+  text-align:center;
+}
+</style>
+</head>
+<body>
+
+<div class="container legacy-page">
+
+  <div class="legacy-header">
+    <h1>📜 Legacy Archive</h1>
+    <p>A record of your journey through Arcane Self.</p>
+  </div>
+
+  <div class="arcane-card character-card">
+
+    <h2 id="characterName">Hunter</h2>
+
+    <p id="characterClass">Class</p>
+
+    <div class="mt-2">
+      <span id="rankBadge" class="rank-badge">
+        E Rank
+      </span>
+    </div>
+
+  </div>
+
+  <div class="grid grid-3 summary-grid">
+
+    <div class="arcane-card summary-card">
+      <h3>Total XP</h3>
+      <div id="totalXP" class="big-number">0</div>
+    </div>
+
+    <div class="arcane-card summary-card">
+      <h3>Power Level</h3>
+      <div id="powerLevel" class="big-number">0</div>
+    </div>
+
+    <div class="arcane-card summary-card">
+      <h3>Character Age</h3>
+      <div id="characterAge" class="big-number">0</div>
+    </div>
+
+  </div>
+
+  <div class="arcane-card timeline">
+
+    <h2 class="mb-3">Journey Timeline</h2>
+
+    <div class="timeline-item">
+      <div class="timeline-date">
+        Character Created
+      </div>
+      <p id="createdDate">
+        -
+      </p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">
+        Current Rank
+      </div>
+      <p id="currentRank">
+        E Rank
+      </p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">
+        Check-Ins Completed
+      </div>
+      <p id="checkInCount">
+        0
+      </p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-date">
+        Longest Streak
+      </div>
+      <p id="longestStreak">
+        0 Days
+      </p>
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+
+    <a href="dashboard.html">
+      <button class="arcane-btn">
+        Return To Dashboard
+      </button>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "create.html";
+}
+
+const data = getData();
+
+document.getElementById("characterName").textContent =
+  data.character.name;
+
+document.getElementById("characterClass").textContent =
+  data.character.class;
+
+document.getElementById("rankBadge").textContent =
+  `${data.rank} Rank`;
+
+document.getElementById("totalXP").textContent =
+  data.totalXP;
+
+document.getElementById("powerLevel").textContent =
+  getPowerLevel();
+
+document.getElementById("characterAge").textContent =
+  `${getCharacterAgeDays()}d`;
+
+document.getElementById("createdDate").textContent =
+  formatDate(data.character.createdAt);
+
+document.getElementById("currentRank").textContent =
+  `${data.rank} Rank`;
+
+document.getElementById("checkInCount").textContent =
+  data.checkIns.length;
+
+document.getElementById("longestStreak").textContent =
+  `${data.streaks.longest} Days`;
+</script>
+
+</body>
+</html>

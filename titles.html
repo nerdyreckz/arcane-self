@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Titles</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.titles-page{
+  padding:2rem 0;
+}
+
+.page-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.page-header h1{
+  color:var(--secondary);
+}
+
+.title-card{
+  text-align:center;
+}
+
+.title-name{
+  color:var(--secondary);
+  margin-bottom:.5rem;
+}
+
+.unlocked{
+  border-color:var(--secondary);
+  box-shadow:0 0 20px rgba(245,158,11,.25);
+}
+
+.locked{
+  opacity:.5;
+}
+
+.status{
+  margin-top:1rem;
+  color:var(--cyan);
+  font-weight:700;
+}
+
+.current-title{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.current-title h2{
+  color:var(--secondary);
+}
+</style>
+</head>
+<body>
+
+<div class="container titles-page">
+
+  <div class="page-header">
+    <h1>👑 Title Archive</h1>
+    <p>Earn legendary titles through your journey.</p>
+  </div>
+
+  <div class="arcane-card current-title">
+    <h2>Current Title</h2>
+    <p id="currentTitle">Unranked Wanderer</p>
+  </div>
+
+  <div class="grid grid-3">
+
+    <div id="disciplinedOne" class="arcane-card title-card locked">
+      <h3 class="title-name">Disciplined One</h3>
+      <p>Reach a 7 day streak.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="apprenticeMage" class="arcane-card title-card locked">
+      <h3 class="title-name">Apprentice Mage</h3>
+      <p>Reach 500 Mana XP.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="ironBody" class="arcane-card title-card locked">
+      <h3 class="title-name">Iron Body</h3>
+      <p>Reach 500 Strength XP.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="ascendant" class="arcane-card title-card locked">
+      <h3 class="title-name">Ascendant</h3>
+      <p>Reach 1000 Total XP.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="eliteHunter" class="arcane-card title-card locked">
+      <h3 class="title-name">Elite Hunter</h3>
+      <p>Reach A Rank.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="shadowMonarch" class="arcane-card title-card locked">
+      <h3 class="title-name">Shadow Monarch</h3>
+      <p>Reach S Rank.</p>
+      <div class="status">Locked</div>
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+    <a href="dashboard.html">
+      <button class="arcane-btn">
+        Return To Dashboard
+      </button>
+    </a>
+  </div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "create.html";
+}
+
+const data = getData();
+let currentTitle = "Unranked Wanderer";
+
+function unlock(id, title){
+
+  const card = document.getElementById(id);
+
+  card.classList.remove("locked");
+  card.classList.add("unlocked");
+
+  card.querySelector(".status").textContent =
+    "Unlocked";
+
+  currentTitle = title;
+}
+
+if(data.streaks.longest >= 7){
+  unlock("disciplinedOne","Disciplined One");
+}
+
+if(data.stats.mana.xp >= 500){
+  unlock("apprenticeMage","Apprentice Mage");
+}
+
+if(data.stats.strength.xp >= 500){
+  unlock("ironBody","Iron Body");
+}
+
+if(data.totalXP >= 1000){
+  unlock("ascendant","Ascendant");
+}
+
+if(["A","S"].includes(data.rank)){
+  unlock("eliteHunter","Elite Hunter");
+}
+
+if(data.rank === "S"){
+  unlock("shadowMonarch","Shadow Monarch");
+}
+
+document.getElementById("currentTitle").textContent =
+  currentTitle;
+</script>
+
+</body>
+</html>

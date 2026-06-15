@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Achievements</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.achievements-page{
+  padding:2rem 0;
+}
+
+.page-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.page-header h1{
+  color:var(--secondary);
+}
+
+.achievement-card{
+  text-align:center;
+  position:relative;
+}
+
+.achievement-icon{
+  font-size:3rem;
+  margin-bottom:1rem;
+}
+
+.unlocked{
+  border-color:var(--secondary);
+  box-shadow:0 0 20px rgba(245,158,11,.25);
+}
+
+.locked{
+  opacity:.6;
+}
+
+.status{
+  margin-top:1rem;
+  color:var(--cyan);
+  font-weight:700;
+}
+</style>
+</head>
+<body>
+
+<div class="container achievements-page">
+
+  <div class="page-header">
+    <h1>🏆 Achievement Vault</h1>
+    <p>Track your greatest milestones.</p>
+  </div>
+
+  <div class="grid grid-3">
+
+    <div id="firstBlood" class="arcane-card achievement-card locked">
+      <div class="achievement-icon">⚔️</div>
+      <h3>First Blood</h3>
+      <p>Complete your first check-in.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="awakening" class="arcane-card achievement-card locked">
+      <div class="achievement-icon">✨</div>
+      <h3>Awakening</h3>
+      <p>Reach D Rank.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="disciplined" class="arcane-card achievement-card locked">
+      <div class="achievement-icon">🔥</div>
+      <h3>Disciplined One</h3>
+      <p>Reach a 7 day streak.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="sage" class="arcane-card achievement-card locked">
+      <div class="achievement-icon">📚</div>
+      <h3>Sage</h3>
+      <p>Earn 500 Wisdom XP.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="titan" class="arcane-card achievement-card locked">
+      <div class="achievement-icon">💪</div>
+      <h3>Titan</h3>
+      <p>Earn 500 Strength XP.</p>
+      <div class="status">Locked</div>
+    </div>
+
+    <div id="monarch" class="arcane-card achievement-card locked">
+      <div class="achievement-icon">👑</div>
+      <h3>Shadow Monarch</h3>
+      <p>Reach S Rank.</p>
+      <div class="status">Locked</div>
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+
+    <a href="dashboard.html">
+      <button class="arcane-btn">
+        Return To Dashboard
+      </button>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "create.html";
+}
+
+const data = getData();
+
+function unlock(id){
+
+  const card = document.getElementById(id);
+
+  card.classList.remove("locked");
+  card.classList.add("unlocked");
+
+  card.querySelector(".status").textContent =
+    "Unlocked";
+}
+
+/* First Blood */
+if(data.checkIns.length >= 1){
+  unlock("firstBlood");
+}
+
+/* D Rank */
+if(["D","C","B","A","S"].includes(data.rank)){
+  unlock("awakening");
+}
+
+/* 7 Day Streak */
+if(data.streaks.longest >= 7){
+  unlock("disciplined");
+}
+
+/* Sage */
+if(data.stats.wisdom.xp >= 500){
+  unlock("sage");
+}
+
+/* Titan */
+if(data.stats.strength.xp >= 500){
+  unlock("titan");
+}
+
+/* S Rank */
+if(data.rank === "S"){
+  unlock("monarch");
+}
+</script>
+
+</body>
+</html>

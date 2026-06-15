@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Chronicle</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.chronicle-page{
+  padding:2rem 0;
+}
+
+.page-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.page-header h1{
+  color:var(--secondary);
+}
+
+.story-card{
+  margin-bottom:1rem;
+}
+
+.story-date{
+  color:var(--cyan);
+  font-weight:700;
+  margin-bottom:.5rem;
+}
+
+.story-title{
+  color:var(--secondary);
+  margin-bottom:.5rem;
+}
+
+.empty-state{
+  text-align:center;
+  color:var(--text-muted);
+  padding:2rem;
+}
+</style>
+</head>
+<body>
+
+<div class="container chronicle-page">
+
+  <div class="page-header">
+    <h1>📚 Chronicle</h1>
+    <p>The story of your evolution.</p>
+  </div>
+
+  <div id="chronicleContainer">
+
+    <div class="empty-state">
+      Your legend has yet to be written.
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+
+    <a href="../dashboard.html">
+      <button class="arcane-btn">
+        Return To Dashboard
+      </button>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "../create.html";
+}
+
+const data = getData();
+const container =
+  document.getElementById("chronicleContainer");
+
+const events = [];
+
+events.push({
+  title: "Character Awakening",
+  date: data.character.createdAt,
+  description: `${data.character.name} began the journey as a ${data.character.class}.`
+});
+
+if(data.totalXP >= 500){
+  events.push({
+    title: "Rank Advancement",
+    date: new Date(),
+    description: `Reached ${data.rank} Rank.`
+  });
+}
+
+if(data.streaks.longest >= 7){
+  events.push({
+    title: "Disciplined One",
+    date: new Date(),
+    description: `Maintained a ${data.streaks.longest}-day streak.`
+  });
+}
+
+if(events.length){
+
+  container.innerHTML = "";
+
+  events.forEach(event => {
+
+    const card = document.createElement("div");
+
+    card.className = "arcane-card story-card";
+
+    card.innerHTML = `
+      <div class="story-date">
+        ${formatDate(event.date)}
+      </div>
+
+      <h3 class="story-title">
+        ${event.title}
+      </h3>
+
+      <p>${event.description}</p>
+    `;
+
+    container.appendChild(card);
+  });
+
+}
+</script>
+
+</body>
+</html>

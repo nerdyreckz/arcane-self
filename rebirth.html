@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Rebirth</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.rebirth-page{
+  padding:2rem 0;
+}
+
+.rebirth-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.rebirth-header h1{
+  color:var(--secondary);
+}
+
+.rebirth-card{
+  text-align:center;
+  max-width:900px;
+  margin:auto;
+}
+
+.rank-display{
+  font-size:5rem;
+  color:var(--secondary);
+  margin:1rem 0;
+}
+
+.requirement-box{
+  margin-top:2rem;
+  text-align:left;
+}
+
+.requirement{
+  padding:1rem;
+  margin-bottom:1rem;
+}
+
+.complete{
+  border-color:var(--success);
+}
+
+.locked{
+  border-color:var(--danger);
+}
+
+.rebirth-benefits{
+  margin-top:2rem;
+}
+
+.rebirth-btn{
+  margin-top:2rem;
+}
+
+.warning{
+  color:var(--text-muted);
+  margin-top:1rem;
+}
+</style>
+</head>
+<body>
+
+<div class="container rebirth-page">
+
+  <div class="rebirth-header">
+    <h1>🔥 Rebirth Chamber</h1>
+    <p>Transcend your current limits and begin anew.</p>
+  </div>
+
+  <div class="arcane-card rebirth-card glow">
+
+    <h2>Current Rank</h2>
+
+    <div id="currentRank" class="rank-display">
+      E
+    </div>
+
+    <p id="rebirthStatus">
+      Rebirth Locked
+    </p>
+
+    <div class="requirement-box">
+
+      <div id="rankRequirement"
+           class="arcane-card requirement locked">
+
+        Reach S Rank
+
+      </div>
+
+      <div id="xpRequirement"
+           class="arcane-card requirement locked">
+
+        Reach 12,000 Total XP
+
+      </div>
+
+    </div>
+
+    <div class="rebirth-benefits">
+
+      <h3>Rebirth Rewards</h3>
+
+      <p>✓ Keep Character Identity</p>
+      <p>✓ Keep Achievements</p>
+      <p>✓ Keep Titles</p>
+      <p>✓ Gain Prestige Status</p>
+
+      <p class="warning">
+        Stats, XP and Rank will reset.
+      </p>
+
+    </div>
+
+    <button
+      id="rebirthBtn"
+      class="arcane-btn rebirth-btn"
+      disabled>
+      Rebirth Unavailable
+    </button>
+
+  </div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "create.html";
+}
+
+const data = getData();
+
+document.getElementById("currentRank").textContent =
+  data.rank;
+
+const canRebirth =
+  data.rank === "S" &&
+  data.totalXP >= 12000;
+
+if(canRebirth){
+
+  document.getElementById("rankRequirement")
+    .classList.remove("locked");
+
+  document.getElementById("rankRequirement")
+    .classList.add("complete");
+
+  document.getElementById("xpRequirement")
+    .classList.remove("locked");
+
+  document.getElementById("xpRequirement")
+    .classList.add("complete");
+
+  document.getElementById("rebirthStatus")
+    .textContent = "Rebirth Available";
+
+  const btn =
+    document.getElementById("rebirthBtn");
+
+  btn.disabled = false;
+  btn.textContent = "Begin Rebirth";
+
+  btn.addEventListener("click", () => {
+
+    const confirmRebirth =
+      confirm(
+        "Rebirth will reset XP, stats and rank. Continue?"
+      );
+
+    if(!confirmRebirth) return;
+
+    const oldCharacter = data.character;
+
+    resetData();
+
+    const newData = getData();
+
+    newData.character = oldCharacter;
+
+    saveData(newData);
+
+    alert("Rebirth Complete. A new journey begins.");
+
+    window.location.href = "dashboard.html";
+  });
+
+}else{
+
+  if(data.rank === "S"){
+    document.getElementById("rankRequirement")
+      .classList.remove("locked");
+
+    document.getElementById("rankRequirement")
+      .classList.add("complete");
+  }
+
+  if(data.totalXP >= 12000){
+    document.getElementById("xpRequirement")
+      .classList.remove("locked");
+
+    document.getElementById("xpRequirement")
+      .classList.add("complete");
+  }
+}
+</script>
+
+</body>
+</html>

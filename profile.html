@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Profile</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.profile-page{
+  padding:2rem 0;
+}
+
+.profile-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.avatar{
+  font-size:5rem;
+  margin-bottom:1rem;
+}
+
+.profile-card{
+  text-align:center;
+}
+
+.info-grid{
+  margin-top:2rem;
+}
+
+.info-item h3{
+  color:var(--secondary);
+  margin-bottom:.5rem;
+}
+
+.nav-buttons{
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-top:2rem;
+}
+</style>
+</head>
+<body>
+
+<div class="container profile-page">
+
+  <div class="profile-header">
+    <h1>Hunter Profile</h1>
+    <p>Your Arcane Identity</p>
+  </div>
+
+  <div class="arcane-card profile-card">
+
+    <div id="avatar" class="avatar">⚔️</div>
+
+    <h2 id="characterName">Hunter</h2>
+
+    <p id="characterClass">Class</p>
+
+    <div class="mt-2">
+      <span id="rankBadge" class="rank-badge">E Rank</span>
+    </div>
+
+  </div>
+
+  <div class="grid grid-3 info-grid">
+
+    <div class="arcane-card info-item">
+      <h3>Total XP</h3>
+      <p id="totalXP">0 XP</p>
+    </div>
+
+    <div class="arcane-card info-item">
+      <h3>Power Level</h3>
+      <p id="powerLevel">0</p>
+    </div>
+
+    <div class="arcane-card info-item">
+      <h3>Character Age</h3>
+      <p id="ageDays">0 Days</p>
+    </div>
+
+    <div class="arcane-card info-item">
+      <h3>Current Streak</h3>
+      <p id="currentStreak">0</p>
+    </div>
+
+    <div class="arcane-card info-item">
+      <h3>Longest Streak</h3>
+      <p id="longestStreak">0</p>
+    </div>
+
+    <div class="arcane-card info-item">
+      <h3>Created On</h3>
+      <p id="createdDate">-</p>
+    </div>
+
+  </div>
+
+  <div class="nav-buttons">
+
+    <a href="dashboard.html">
+      <button class="arcane-btn">Dashboard</button>
+    </a>
+
+    <a href="stats.html">
+      <button class="arcane-btn">Stats</button>
+    </a>
+
+    <a href="rank.html">
+      <button class="arcane-btn">Rank</button>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "create.html";
+}
+
+const data = getData();
+
+document.getElementById("avatar").textContent =
+  data.character.avatar || "⚔️";
+
+document.getElementById("characterName").textContent =
+  data.character.name;
+
+document.getElementById("characterClass").textContent =
+  data.character.class;
+
+document.getElementById("rankBadge").textContent =
+  `${data.rank} Rank`;
+
+document.getElementById("totalXP").textContent =
+  formatXP(data.totalXP);
+
+document.getElementById("powerLevel").textContent =
+  getPowerLevel();
+
+document.getElementById("ageDays").textContent =
+  `${getCharacterAgeDays()} Days`;
+
+document.getElementById("currentStreak").textContent =
+  getCurrentStreak();
+
+document.getElementById("longestStreak").textContent =
+  getLongestStreak();
+
+document.getElementById("createdDate").textContent =
+  formatDate(data.character.createdAt);
+</script>
+
+</body>
+</html>

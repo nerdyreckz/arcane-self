@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Stats</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+.stats-page{
+  padding:2rem 0;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.header h1{
+  color:var(--secondary);
+}
+
+.chart-card{
+  margin-top:2rem;
+}
+
+.back-btn{
+  margin-top:2rem;
+}
+</style>
+</head>
+<body>
+
+<div class="container stats-page">
+
+  <div class="header">
+    <h1>Stat Analytics</h1>
+    <p>View your current progression.</p>
+  </div>
+
+  <div class="grid grid-3">
+
+    <div class="arcane-card stat-card">
+      <h3>Mana</h3>
+      <div id="manaLevel" class="stat-level">1</div>
+      <p id="manaXP">0 XP</p>
+    </div>
+
+    <div class="arcane-card stat-card">
+      <h3>Strength</h3>
+      <div id="strengthLevel" class="stat-level">1</div>
+      <p id="strengthXP">0 XP</p>
+    </div>
+
+    <div class="arcane-card stat-card">
+      <h3>Wisdom</h3>
+      <div id="wisdomLevel" class="stat-level">1</div>
+      <p id="wisdomXP">0 XP</p>
+    </div>
+
+    <div class="arcane-card stat-card">
+      <h3>Vitality</h3>
+      <div id="vitalityLevel" class="stat-level">1</div>
+      <p id="vitalityXP">0 XP</p>
+    </div>
+
+    <div class="arcane-card stat-card">
+      <h3>Willpower</h3>
+      <div id="willpowerLevel" class="stat-level">1</div>
+      <p id="willpowerXP">0 XP</p>
+    </div>
+
+    <div class="arcane-card stat-card">
+      <h3>Power Level</h3>
+      <div id="powerLevel" class="stat-level">0</div>
+      <p>Total Character Power</p>
+    </div>
+
+  </div>
+
+  <div class="arcane-card chart-card">
+    <canvas id="statsChart"></canvas>
+  </div>
+
+  <div class="text-center back-btn">
+    <a href="dashboard.html">
+      <button class="arcane-btn">Back to Dashboard</button>
+    </a>
+  </div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "create.html";
+}
+
+const data = getData();
+const stats = data.stats;
+
+document.getElementById("manaLevel").textContent = stats.mana.level;
+document.getElementById("manaXP").textContent = formatXP(stats.mana.xp);
+
+document.getElementById("strengthLevel").textContent = stats.strength.level;
+document.getElementById("strengthXP").textContent = formatXP(stats.strength.xp);
+
+document.getElementById("wisdomLevel").textContent = stats.wisdom.level;
+document.getElementById("wisdomXP").textContent = formatXP(stats.wisdom.xp);
+
+document.getElementById("vitalityLevel").textContent = stats.vitality.level;
+document.getElementById("vitalityXP").textContent = formatXP(stats.vitality.xp);
+
+document.getElementById("willpowerLevel").textContent = stats.willpower.level;
+document.getElementById("willpowerXP").textContent = formatXP(stats.willpower.xp);
+
+document.getElementById("powerLevel").textContent = getPowerLevel();
+
+new Chart(document.getElementById("statsChart"), {
+  type: "radar",
+  data: {
+    labels: [
+      "Mana",
+      "Strength",
+      "Wisdom",
+      "Vitality",
+      "Willpower"
+    ],
+    datasets: [{
+      label: "Levels",
+      data: [
+        stats.mana.level,
+        stats.strength.level,
+        stats.wisdom.level,
+        stats.vitality.level,
+        stats.willpower.level
+      ],
+      backgroundColor: "rgba(124,58,237,0.25)",
+      borderColor: "#7c3aed",
+      borderWidth: 2,
+      pointBackgroundColor: "#22d3ee"
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: "#e2e8f0"
+        }
+      }
+    },
+    scales: {
+      r: {
+        angleLines: {
+          color: "rgba(255,255,255,0.1)"
+        },
+        grid: {
+          color: "rgba(255,255,255,0.1)"
+        },
+        pointLabels: {
+          color: "#e2e8f0"
+        },
+        ticks: {
+          color: "#e2e8f0",
+          backdropColor: "transparent"
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

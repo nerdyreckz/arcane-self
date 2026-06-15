@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Monthly Quests</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.monthly-page{
+  padding:2rem 0;
+}
+
+.page-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.page-header h1{
+  color:var(--secondary);
+}
+
+.quest-card{
+  text-align:center;
+}
+
+.reward{
+  color:var(--cyan);
+  margin-top:.5rem;
+}
+
+.legendary{
+  color:var(--secondary);
+  font-weight:700;
+}
+</style>
+</head>
+<body>
+
+<div class="container monthly-page">
+
+  <div class="page-header">
+    <h1>🗓️ Monthly Quests</h1>
+    <p>Legendary objectives that define your growth.</p>
+  </div>
+
+  <div class="grid grid-3">
+
+    <div class="arcane-card quest-card">
+
+      <h3>Body Ascension</h3>
+
+      <p>Complete 20 workouts this month.</p>
+
+      <div class="reward">
+        +500 Strength XP
+      </div>
+
+      <div class="legendary">
+        ⭐ Legendary Quest
+      </div>
+
+      <button class="arcane-btn mt-2"
+        onclick="completeQuest('strength',500)">
+        Complete
+      </button>
+
+    </div>
+
+    <div class="arcane-card quest-card">
+
+      <h3>Scholar's Path</h3>
+
+      <p>Read 500 pages this month.</p>
+
+      <div class="reward">
+        +500 Wisdom XP
+      </div>
+
+      <div class="legendary">
+        ⭐ Legendary Quest
+      </div>
+
+      <button class="arcane-btn mt-2"
+        onclick="completeQuest('wisdom',500)">
+        Complete
+      </button>
+
+    </div>
+
+    <div class="arcane-card quest-card">
+
+      <h3>Monarch's Discipline</h3>
+
+      <p>Maintain a perfect month of consistency.</p>
+
+      <div class="reward">
+        +500 Willpower XP
+      </div>
+
+      <div class="legendary">
+        👑 Monarch Quest
+      </div>
+
+      <button class="arcane-btn mt-2"
+        onclick="completeQuest('willpower',500)">
+        Complete
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+
+    <a href="quest-board.html">
+      <button class="arcane-btn">
+        Back To Quest Board
+      </button>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "../create.html";
+}
+
+function completeQuest(stat,xp){
+
+  addXP(stat,xp);
+
+  alert(
+    `Monthly Quest Complete!\n+${xp} ${capitalize(stat)} XP`
+  );
+}
+</script>
+
+</body>
+</html>

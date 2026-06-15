@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Profile Showcase</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.showcase-page{
+  padding:2rem 0;
+}
+
+.page-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.page-header h1{
+  color:var(--secondary);
+}
+
+.showcase-card{
+  text-align:center;
+  max-width:900px;
+  margin:auto;
+}
+
+.avatar{
+  font-size:5rem;
+  margin-bottom:1rem;
+}
+
+.rank{
+  font-size:3rem;
+  color:var(--secondary);
+  margin:1rem 0;
+}
+
+.stats-grid{
+  margin-top:2rem;
+}
+
+.stat-number{
+  font-size:2rem;
+  color:var(--cyan);
+  font-weight:700;
+}
+
+.hero-title{
+  color:var(--secondary);
+  margin-top:.5rem;
+}
+</style>
+</head>
+<body>
+
+<div class="container showcase-page">
+
+  <div class="page-header">
+    <h1>✨ Profile Showcase</h1>
+    <p>Your complete hunter profile.</p>
+  </div>
+
+  <div class="arcane-card showcase-card glow">
+
+    <div id="avatar" class="avatar">⚔️</div>
+
+    <h2 id="characterName">Hunter</h2>
+
+    <p id="characterClass">Class</p>
+
+    <div id="currentTitle" class="hero-title">
+      Unranked Wanderer
+    </div>
+
+    <div id="rankDisplay" class="rank">
+      E
+    </div>
+
+  </div>
+
+  <div class="grid grid-3 stats-grid">
+
+    <div class="arcane-card">
+      <h3>Total XP</h3>
+      <div id="totalXP" class="stat-number">0</div>
+    </div>
+
+    <div class="arcane-card">
+      <h3>Power Level</h3>
+      <div id="powerLevel" class="stat-number">0</div>
+    </div>
+
+    <div class="arcane-card">
+      <h3>Longest Streak</h3>
+      <div id="longestStreak" class="stat-number">0</div>
+    </div>
+
+  </div>
+
+  <div class="grid grid-3 stats-grid">
+
+    <div class="arcane-card">
+      <h3>Mana</h3>
+      <div id="manaLevel" class="stat-number">1</div>
+    </div>
+
+    <div class="arcane-card">
+      <h3>Strength</h3>
+      <div id="strengthLevel" class="stat-number">1</div>
+    </div>
+
+    <div class="arcane-card">
+      <h3>Wisdom</h3>
+      <div id="wisdomLevel" class="stat-number">1</div>
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+
+    <a href="../dashboard.html">
+      <button class="arcane-btn">
+        Return To Dashboard
+      </button>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "../create.html";
+}
+
+const data = getData();
+
+document.getElementById("avatar").textContent =
+  data.character.avatar || "⚔️";
+
+document.getElementById("characterName").textContent =
+  data.character.name;
+
+document.getElementById("characterClass").textContent =
+  data.character.class;
+
+document.getElementById("rankDisplay").textContent =
+  `${data.rank} Rank`;
+
+document.getElementById("totalXP").textContent =
+  data.totalXP;
+
+document.getElementById("powerLevel").textContent =
+  getPowerLevel();
+
+document.getElementById("longestStreak").textContent =
+  data.streaks.longest;
+
+document.getElementById("manaLevel").textContent =
+  data.stats.mana.level;
+
+document.getElementById("strengthLevel").textContent =
+  data.stats.strength.level;
+
+document.getElementById("wisdomLevel").textContent =
+  data.stats.wisdom.level;
+
+let title = "Unranked Wanderer";
+
+if(data.rank === "S"){
+  title = "Shadow Monarch";
+}else if(["A","B"].includes(data.rank)){
+  title = "Elite Hunter";
+}else if(data.totalXP >= 1000){
+  title = "Ascendant";
+}
+
+document.getElementById("currentTitle").textContent =
+  title;
+</script>
+
+</body>
+</html>

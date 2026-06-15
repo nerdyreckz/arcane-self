@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Rank</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.rank-page{
+  padding:2rem 0;
+}
+
+.rank-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.rank-header h1{
+  color:var(--secondary);
+}
+
+.rank-card{
+  text-align:center;
+  padding:3rem 2rem;
+}
+
+.rank-letter{
+  font-size:6rem;
+  font-family:'Cinzel',serif;
+  color:var(--secondary);
+  margin-bottom:1rem;
+}
+
+.rank-name{
+  font-size:1.5rem;
+  margin-bottom:1rem;
+}
+
+.rank-description{
+  color:var(--text-muted);
+  margin-bottom:2rem;
+}
+
+.progress-section{
+  margin-top:2rem;
+}
+
+.rank-roadmap{
+  margin-top:2rem;
+}
+
+.rank-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1rem;
+  margin-bottom:1rem;
+}
+
+.rank-item.current{
+  border-color:var(--cyan);
+  box-shadow:var(--shadow-cyan);
+}
+
+.character-info{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.avatar{
+  font-size:4rem;
+  margin-bottom:1rem;
+}
+
+.back-btn{
+  margin-top:2rem;
+  text-align:center;
+}
+</style>
+</head>
+<body>
+
+<div class="container rank-page">
+
+  <div class="rank-header">
+    <h1>Hunter Rank</h1>
+    <p>Your current standing in the world of Arcane Self.</p>
+  </div>
+
+  <!-- CHARACTER INFO -->
+
+  <div class="arcane-card character-info">
+
+    <div id="avatar" class="avatar">⚔️</div>
+
+    <h2 id="characterName">Hunter</h2>
+
+    <p id="characterClass">Class</p>
+
+  </div>
+
+  <!-- CURRENT RANK -->
+
+  <div class="arcane-card rank-card glow">
+
+    <div id="rankLetter" class="rank-letter">
+      E
+    </div>
+
+    <div id="rankName" class="rank-name">
+      Novice
+    </div>
+
+    <div id="rankDescription" class="rank-description">
+      The beginning of your journey.
+    </div>
+
+    <h3>Total XP</h3>
+    <div id="totalXP" class="stat-level">
+      0
+    </div>
+
+  </div>
+
+  <!-- PROGRESS -->
+
+  <div class="arcane-card progress-section">
+
+    <h2>Progress To Next Rank</h2>
+
+    <div class="mt-2">
+      <div class="progress-container">
+        <div id="rankProgress" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <p id="progressText" class="mt-2">
+      0 XP to next rank
+    </p>
+
+  </div>
+
+  <!-- RANK ROADMAP -->
+
+  <div class="rank-roadmap">
+
+    <h2 class="mb-3 text-center">
+      Rank Path
+    </h2>
+
+    <div id="rankE" class="arcane-card rank-item">
+      <span>E Rank</span>
+      <span>0 XP</span>
+    </div>
+
+    <div id="rankD" class="arcane-card rank-item">
+      <span>D Rank</span>
+      <span>500 XP</span>
+    </div>
+
+    <div id="rankC" class="arcane-card rank-item">
+      <span>C Rank</span>
+      <span>1500 XP</span>
+    </div>
+
+    <div id="rankB" class="arcane-card rank-item">
+      <span>B Rank</span>
+      <span>3500 XP</span>
+    </div>
+
+    <div id="rankA" class="arcane-card rank-item">
+      <span>A Rank</span>
+      <span>7000 XP</span>
+    </div>
+
+    <div id="rankS" class="arcane-card rank-item">
+      <span>S Rank</span>
+      <span>12000 XP</span>
+    </div>
+
+  </div>
+
+  <div class="back-btn">
+    <a href="dashboard.html">
+      <button class="arcane-btn">
+        Back To Dashboard
+      </button>
+    </a>
+  </div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/utils.js"></script>
+
+<script>
+
+if(!characterExists()){
+  window.location.href = "create.html";
+}
+
+const data = getData();
+
+document.getElementById("characterName").textContent =
+  data.character.name;
+
+document.getElementById("characterClass").textContent =
+  data.character.class;
+
+document.getElementById("avatar").textContent =
+  data.character.avatar || "⚔️";
+
+document.getElementById("rankLetter").textContent =
+  data.rank;
+
+document.getElementById("totalXP").textContent =
+  formatXP(data.totalXP);
+
+const rankInfo = {
+  E: {
+    name:"Novice",
+    desc:"The first step toward greatness."
+  },
+  D: {
+    name:"Awakened",
+    desc:"Your potential has begun to emerge."
+  },
+  C: {
+    name:"Elite",
+    desc:"Above average and steadily growing."
+  },
+  B: {
+    name:"Veteran",
+    desc:"A proven force of discipline."
+  },
+  A: {
+    name:"Ascendant",
+    desc:"Among the strongest hunters."
+  },
+  S: {
+    name:"Shadow Monarch",
+    desc:"A legendary existence."
+  }
+};
+
+document.getElementById("rankName").textContent =
+  rankInfo[data.rank].name;
+
+document.getElementById("rankDescription").textContent =
+  rankInfo[data.rank].desc;
+
+/* Current Rank Highlight */
+
+document
+  .getElementById(`rank${data.rank}`)
+  .classList
+  .add("current");
+
+/* Progress */
+
+const thresholds = {
+  E: { current:0, next:500 },
+  D: { current:500, next:1500 },
+  C: { current:1500, next:3500 },
+  B: { current:3500, next:7000 },
+  A: { current:7000, next:12000 },
+  S: { current:12000, next:12000 }
+};
+
+const rankData = thresholds[data.rank];
+
+if(data.rank === "S"){
+
+  document.getElementById("rankProgress").style.width =
+    "100%";
+
+  document.getElementById("progressText").textContent =
+    "Maximum Rank Achieved";
+
+}else{
+
+  const currentProgress =
+    data.totalXP - rankData.current;
+
+  const totalNeeded =
+    rankData.next - rankData.current;
+
+  const percent =
+    (currentProgress / totalNeeded) * 100;
+
+  document.getElementById("rankProgress").style.width =
+    `${percent}%`;
+
+  document.getElementById("progressText").textContent =
+    `${rankData.next - data.totalXP} XP until next rank`;
+}
+
+</script>
+
+</body>
+</html>

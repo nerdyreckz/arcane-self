@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Avatar Gallery</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.gallery-page{
+  padding:2rem 0;
+}
+
+.page-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.page-header h1{
+  color:var(--secondary);
+}
+
+.avatar-card{
+  text-align:center;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.avatar-card:hover{
+  transform:translateY(-4px);
+}
+
+.avatar-icon{
+  font-size:4rem;
+  margin-bottom:1rem;
+}
+
+.selected{
+  border-color:var(--secondary);
+  box-shadow:0 0 20px rgba(245,158,11,.25);
+}
+
+.current-avatar{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.current-display{
+  font-size:5rem;
+  margin-top:1rem;
+}
+</style>
+</head>
+<body>
+
+<div class="container gallery-page">
+
+  <div class="page-header">
+    <h1>🖼️ Avatar Gallery</h1>
+    <p>Customize your hunter identity.</p>
+  </div>
+
+  <div class="arcane-card current-avatar">
+
+    <h2>Current Avatar</h2>
+
+    <div id="currentAvatar" class="current-display">
+      ⚔️
+    </div>
+
+  </div>
+
+  <div class="grid grid-3">
+
+    <div class="arcane-card avatar-card"
+         onclick="selectAvatar('🧙')">
+      <div class="avatar-icon">🧙</div>
+      <h3>Mage</h3>
+    </div>
+
+    <div class="arcane-card avatar-card"
+         onclick="selectAvatar('⚔️')">
+      <div class="avatar-icon">⚔️</div>
+      <h3>Warrior</h3>
+    </div>
+
+    <div class="arcane-card avatar-card"
+         onclick="selectAvatar('📚')">
+      <div class="avatar-icon">📚</div>
+      <h3>Scholar</h3>
+    </div>
+
+    <div class="arcane-card avatar-card"
+         onclick="selectAvatar('🌑')">
+      <div class="avatar-icon">🌑</div>
+      <h3>Shadow</h3>
+    </div>
+
+    <div class="arcane-card avatar-card"
+         onclick="selectAvatar('🔥')">
+      <div class="avatar-icon">🔥</div>
+      <h3>Flame Hunter</h3>
+    </div>
+
+    <div class="arcane-card avatar-card"
+         onclick="selectAvatar('👑')">
+      <div class="avatar-icon">👑</div>
+      <h3>Monarch</h3>
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+
+    <a href="../dashboard.html">
+      <button class="arcane-btn">
+        Return To Dashboard
+      </button>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="../js/storage.js"></script>
+<script src="../js/utils.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "../create.html";
+}
+
+const data = getData();
+
+document.getElementById("currentAvatar").textContent =
+  data.character.avatar || "⚔️";
+
+function selectAvatar(avatar){
+
+  const data = getData();
+
+  data.character.avatar = avatar;
+
+  saveData(data);
+
+  document.getElementById("currentAvatar").textContent =
+    avatar;
+
+  alert("Avatar Updated!");
+}
+</script>
+
+</body>
+</html>
