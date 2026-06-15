@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Arcane Self | Themes</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+.theme-page{
+  padding:2rem 0;
+}
+
+.page-header{
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+.page-header h1{
+  color:var(--secondary);
+}
+
+.theme-card{
+  cursor:pointer;
+  text-align:center;
+  transition:.3s;
+}
+
+.theme-card:hover{
+  transform:translateY(-4px);
+}
+
+.theme-preview{
+  height:120px;
+  border-radius:12px;
+  margin-bottom:1rem;
+}
+
+.active-theme{
+  border:2px solid var(--secondary);
+  box-shadow:0 0 20px rgba(245,158,11,.25);
+}
+
+.current-theme{
+  text-align:center;
+  margin-bottom:2rem;
+}
+</style>
+</head>
+<body>
+
+<div class="container theme-page">
+
+  <div class="page-header">
+    <h1>🎨 Theme Customization</h1>
+    <p>Choose your visual style.</p>
+  </div>
+
+  <div class="arcane-card current-theme">
+
+    <h2>Current Theme</h2>
+
+    <p id="currentTheme">
+      Arcane Default
+    </p>
+
+  </div>
+
+  <div class="grid grid-3">
+
+    <div class="arcane-card theme-card"
+         onclick="setTheme('Arcane Default')">
+
+      <div class="theme-preview"
+           style="background:linear-gradient(135deg,#0a0a1a,#7c3aed);">
+      </div>
+
+      <h3>Arcane Default</h3>
+
+    </div>
+
+    <div class="arcane-card theme-card"
+         onclick="setTheme('Shadow Monarch')">
+
+      <div class="theme-preview"
+           style="background:linear-gradient(135deg,#000,#4c1d95);">
+      </div>
+
+      <h3>Shadow Monarch</h3>
+
+    </div>
+
+    <div class="arcane-card theme-card"
+         onclick="setTheme('Golden Hunter')">
+
+      <div class="theme-preview"
+           style="background:linear-gradient(135deg,#92400e,#f59e0b);">
+      </div>
+
+      <h3>Golden Hunter</h3>
+
+    </div>
+
+    <div class="arcane-card theme-card"
+         onclick="setTheme('Crimson Flame')">
+
+      <div class="theme-preview"
+           style="background:linear-gradient(135deg,#7f1d1d,#ef4444);">
+      </div>
+
+      <h3>Crimson Flame</h3>
+
+    </div>
+
+    <div class="arcane-card theme-card"
+         onclick="setTheme('Emerald Sage')">
+
+      <div class="theme-preview"
+           style="background:linear-gradient(135deg,#064e3b,#10b981);">
+      </div>
+
+      <h3>Emerald Sage</h3>
+
+    </div>
+
+    <div class="arcane-card theme-card"
+         onclick="setTheme('Ocean Mystic')">
+
+      <div class="theme-preview"
+           style="background:linear-gradient(135deg,#164e63,#22d3ee);">
+      </div>
+
+      <h3>Ocean Mystic</h3>
+
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+
+    <a href="../dashboard.html">
+      <button class="arcane-btn">
+        Return To Dashboard
+      </button>
+    </a>
+
+  </div>
+
+</div>
+
+<script src="../js/storage.js"></script>
+
+<script>
+if(!characterExists()){
+  window.location.href = "../create.html";
+}
+
+const data = getData();
+
+if(!data.settings){
+  data.settings = {
+    theme: "Arcane Default"
+  };
+
+  saveData(data);
+}
+
+document.getElementById("currentTheme").textContent =
+  data.settings.theme;
+
+function setTheme(theme){
+
+  const data = getData();
+
+  if(!data.settings){
+    data.settings = {};
+  }
+
+  data.settings.theme = theme;
+
+  saveData(data);
+
+  document.getElementById("currentTheme").textContent =
+    theme;
+
+  alert(`Theme changed to ${theme}`);
+}
+</script>
+
+</body>
+</html>
